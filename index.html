@@ -43,14 +43,16 @@
       box-shadow: 0 4px 20px rgba(255,255,255,0.08);
     }
 
+    h1, .dual-line, .description, .calendar-toggle {
+      text-align: center;
+    }
+
     h1 {
       color: #0ac7a3;
-      text-align: center;
       font-size: 2rem;
     }
 
     p.description {
-      text-align: center;
       font-size: 1rem;
       color: #555;
     }
@@ -89,10 +91,9 @@
       margin: 0 auto 1.5rem;
     }
 
-    .dark-toggle {
+    .dark-toggle, .lang-toggle {
       position: absolute;
       top: 1rem;
-      right: 1rem;
       background-color: #0ac7a3;
       color: white;
       border: none;
@@ -100,6 +101,14 @@
       font-size: 0.9rem;
       border-radius: 6px;
       cursor: pointer;
+    }
+
+    .dark-toggle {
+      right: 1rem;
+    }
+
+    .lang-toggle {
+      left: 1rem;
     }
 
     .highlight-today {
@@ -110,7 +119,6 @@
     }
 
     .dual-line {
-      text-align: center;
       font-size: 0.95rem;
       color: #555;
       margin-top: -0.5rem;
@@ -120,6 +128,10 @@
       color: #aaa;
     }
 
+    .lang-ar { display: none; }
+    .lang-toggle.arabic-active .lang-en { display: none; }
+    .lang-toggle.arabic-active .lang-ar { display: block; }
+
     @keyframes fadein {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -128,22 +140,33 @@
 </head>
 <body>
   <div class="card">
-    <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
+    <button class="lang-toggle" onclick="toggleLang()">🌐 العربية</button>
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+
     <img id="logo" src="https://coptpharaoh.github.io/ChurchEvents/logo.png" alt="Church Logo">
-    <h1>📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
-    <div class="dual-line">⛪ <span lang="ar">الكنيسة القبطية الأرثوذكسية - القديسة العذراء مريم</span></div>
+
+    <h1 class="lang-en">📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
+    <h1 class="lang-ar">📋 الفعاليات الأسبوعية في كنيسة القديسة مريم القبطية الأرثوذكسية</h1>
+
+    <div class="dual-line">
+      <span class="lang-en">⛪ St. Mary Coptic Orthodox Church – Des Moines, IA</span>
+      <span class="lang-ar">⛪ كنيسة القديسة مريم القبطية الأرثوذكسية – دي موين، آيوا</span>
+    </div>
+
     <p class="description">
-      Automatically updated to show services and gatherings for the current week. <span id="todayTag"></span>
+      <span class="lang-en">Automatically updated to show services and gatherings for the current week.</span>
+      <span class="lang-ar">يتم التحديث تلقائيًا لعرض الخدمات والتجمعات لهذا الأسبوع.</span>
+      <br><span id="todayTag"></span>
     </p>
 
     <details open>
-      <summary>📅 Tap to View This Week’s Agenda</summary>
+      <summary>📅 <span class="lang-en">Tap to View This Week’s Agenda</span><span class="lang-ar">اضغط لعرض جدول هذا الأسبوع</span></summary>
       <div id="calendarEmbed"></div>
     </details>
 
     <p style="text-align: center; margin-top: 2rem;">
       <a href="https://yourchurchhomepage.com" target="_blank" style="color: #0ac7a3; text-decoration: none; font-weight: bold;">
-        ⛪ Return to Church Homepage
+        ⛪ <span class="lang-en">Return to Church Homepage</span><span class="lang-ar">العودة إلى الصفحة الرئيسية للكنيسة</span>
       </a>
     </p>
   </div>
@@ -168,6 +191,13 @@
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleLang() {
+      document.body.classList.toggle("arabic-active");
+      const toggle = document.querySelector(".lang-toggle");
+      toggle.classList.toggle("arabic-active");
+      toggle.textContent = toggle.classList.contains("arabic-active") ? "🌐 English" : "🌐 العربية";
     }
 
     const tag = document.getElementById("todayTag");
