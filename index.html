@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>St. Mary Weekly Events</title>
+  <style>
+    :root {
+      --bg-light: #f8f5f0;
+      --text-light: #333;
+      --bg-dark: #1e1e1e;
+      --text-dark: #f0f0f0;
+      --highlight: #fff3cd;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode .card {
+      background: #2c2c2c;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.08);
+    }
+
+    h1, .dual-line, .description, .calendar-toggle {
+      text-align: center;
+    }
+
+    h1 {
+      color: #0ac7a3;
+      font-size: 2rem;
+    }
+
+    p.description {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .dark-mode p.description {
+      color: #ccc;
+    }
+
+    details {
+      margin-top: 2rem;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+      background-color: #0ac7a3;
+      color: white;
+      font-size: 1.1rem;
+      border-radius: 8px;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 520px;
+      border-radius: 0 0 8px 8px;
+      animation: fadein 0.7s ease-in-out;
+      overflow: hidden;
+    }
+
+    #logo {
+      display: block;
+      max-width: 100px;
+      margin: 0 auto 1rem;
+    }
+
+    .dark-toggle, .lang-toggle {
+      position: absolute;
+      top: 1rem;
+      background-color: #0ac7a3;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .dark-toggle {
+      right: 1rem;
+    }
+
+    .lang-toggle {
+      left: 1rem;
+    }
+
+    .highlight-today {
+      background-color: var(--highlight);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-weight: bold;
+    }
+
+    .dual-line {
+      font-size: 0.95rem;
+      color: #555;
+      margin-top: -0.5rem;
+    }
+
+    .dark-mode .dual-line {
+      color: #aaa;
+    }
+
+    .lang-ar { display: none; }
+    .arabic-active .lang-en { display: none; }
+    .arabic-active .lang-ar { display: block; }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="lang-en">
+  <div class="card">
+    <button class="lang-toggle" onclick="toggleLang()">🌐 العربية</button>
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+
+    <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Coptic_cross.svg/128px-Coptic_cross.svg.png" alt="Coptic Cross">
+
+    <h1 class="lang-en">📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
+    <h1 class="lang-ar">📋 الفعاليات الأسبوعية في كنيسة القديسة مريم القبطية الأرثوذكسية</h1>
+
+    <div class="dual-line">
+      <span class="lang-en">⛪ St. Mary Coptic Orthodox Church – Des Moines, IA</span>
+      <span class="lang-ar">⛪ كنيسة القديسة مريم القبطية الأرثوذكسية – دي موين، آيوا</span>
+    </div>
+
+    <p class="description">
+      <span class="lang-en">Automatically updated to show services and gatherings for the current week.</span>
+      <span class="lang-ar">يتم التحديث تلقائيًا لعرض الخدمات والتجمعات لهذا الأسبوع.</span>
+      <br><span id="todayTag"></span>
+    </p>
+
+    <details open>
+      <summary>📅 <span class="lang-en">Tap to View This Week’s Agenda</span><span class="lang-ar">اضغط لعرض جدول هذا الأسبوع</span></summary>
+      <div id="calendarEmbed"></div>
+    </details>
+
+    <p style="text-align: center; margin-top: 2rem;">
+      <a href="https://yourchurchhomepage.com" target="_blank" style="color: #0ac7a3; text-decoration: none; font-weight: bold;">
+        ⛪ <span class="lang-en">Return to Church Homepage</span><span class="lang-ar">العودة إلى الصفحة الرئيسية للكنيسة</span>
+      </a>
+    </p>
+  </div>
+
+  <script>
+    function getFormattedDate(offsetDays) {
+      const date = new Date();
+      date.setDate(date.getDate() + offsetDays);
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}${m}${d}`;
+    }
+
+    const start = getFormattedDate(0);
+    const end = getFormattedDate(6);
+
+    const calendarURL = `https://calendar.google.com/calendar/embed?src=49327e4b8d2b1aed4ebfe4fff3618ee8737f3420634ca45908fbe5f02c1358e5%40group.calendar.google.com&ctz=America%2FChicago&mode=AGENDA&dates=${start}%2F${end}&showTitle=0&showPrint=0&showCalendars=0&showTz=0&showLocation=0`;
+
+    const iframe = document.createElement("iframe");
+    iframe.src = calendarURL;
+    document.getElementById("calendarEmbed").appendChild(iframe);
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleLang() {
+      document.body.classList.toggle("arabic-active");
+      const toggle = document.querySelector(".lang-toggle");
+      toggle.textContent = document.body.classList.contains("arabic-active") ? "🌐 English" : "🌐 العربية";
+    }
+
+    const tag = document.getElementById("todayTag");
+    const now = new Date();
+    const weekday = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const dateString = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    tag.innerHTML = `<span class='highlight-today'>📍 Today is ${weekday}, ${dateString}</span>`;
+  </script>
+</body>
+</html>
