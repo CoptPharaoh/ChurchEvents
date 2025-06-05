@@ -10,6 +10,7 @@
       --text-light: #333;
       --bg-dark: #1e1e1e;
       --text-dark: #f0f0f0;
+      --highlight: #fff3cd;
     }
 
     body {
@@ -83,8 +84,8 @@
 
     #logo {
       display: block;
-      max-width: 100px;
-      margin: 0 auto 1rem;
+      max-width: 120px;
+      margin: 0 auto 1.5rem;
     }
 
     .dark-toggle {
@@ -100,6 +101,13 @@
       cursor: pointer;
     }
 
+    .highlight-today {
+      background-color: var(--highlight);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-weight: bold;
+    }
+
     @keyframes fadein {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -109,9 +117,9 @@
 <body>
   <div class="card">
     <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
-    <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/00/Coptic_cross.svg" alt="Church Logo">
+    <img id="logo" src="https://raw.githubusercontent.com/coptpharaoh/ChurchEvents/main/logo.png" alt="Church Logo">
     <h1>📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
-    <p class="description">Automatically updated to show services and gatherings for the current week.</p>
+    <p class="description">Automatically updated to show services and gatherings for the current week. <span id="todayTag"></span></p>
 
     <details open>
       <summary>📅 Tap to View This Week’s Agenda</summary>
@@ -135,8 +143,10 @@
       return `${y}${m}${d}`;
     }
 
+    // Restrict to exactly 7 days, ending at 6 days from today (today + 6)
     const start = getFormattedDate(0);
-    const end = getFormattedDate(7);
+    const end = getFormattedDate(6);
+
     const calendarURL = `https://calendar.google.com/calendar/embed?src=49327e4b8d2b1aed4ebfe4fff3618ee8737f3420634ca45908fbe5f02c1358e5%40group.calendar.google.com&ctz=America%2FChicago&mode=AGENDA&showLocation=0&showTitle=0&showPrint=0&showCalendars=0&dates=${start}%2F${end}`;
 
     const iframe = document.createElement("iframe");
@@ -146,6 +156,13 @@
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
     }
+
+    // Highlight today's date inline (visual tag under subtitle)
+    const tag = document.getElementById("todayTag");
+    const now = new Date();
+    const weekday = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const dateString = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    tag.innerHTML = `<span class='highlight-today'>📍 Today is ${weekday}, ${dateString}</span>`;
   </script>
 </body>
 </html>
