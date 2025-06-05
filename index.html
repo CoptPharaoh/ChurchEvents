@@ -87,8 +87,8 @@
 
     #logo {
       display: block;
-      max-width: 180px;
-      margin: 0 auto 1.5rem;
+      max-width: 64px;
+      margin: 0 auto 1rem;
     }
 
     .dark-toggle, .lang-toggle {
@@ -143,7 +143,7 @@
     <button class="lang-toggle" onclick="toggleLang()">🌐 العربية</button>
     <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Dark Mode</button>
 
-    <img id="logo" src="https://coptpharaoh.github.io/ChurchEvents/logo.png" alt="Church Logo">
+    <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/00/Coptic_cross.svg" alt="Cross Icon">
 
     <h1 class="lang-en">📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
     <h1 class="lang-ar">📋 الفعاليات الأسبوعية في كنيسة القديسة مريم القبطية الأرثوذكسية</h1>
@@ -183,7 +183,8 @@
 
     const start = getFormattedDate(0);
     const end = getFormattedDate(6);
-    const calendarURL = `https://calendar.google.com/calendar/embed?src=49327e4b8d2b1aed4ebfe4fff3618ee8737f3420634ca45908fbe5f02c1358e5%40group.calendar.google.com&ctz=America%2FChicago&mode=AGENDA&showLocation=0&showTitle=0&showPrint=0&showCalendars=0&dates=${start}%2F${end}`;
+
+    const calendarURL = `https://calendar.google.com/calendar/embed?src=49327e4b8d2b1aed4ebfe4fff3618ee8737f3420634ca45908fbe5f02c1358e5%40group.calendar.google.com&ctz=America%2FChicago&mode=AGENDA&dates=${start}%2F${end}&showTitle=0&showPrint=0&showCalendars=0&showTz=0&showLocation=0`;
 
     const iframe = document.createElement("iframe");
     iframe.src = calendarURL;
