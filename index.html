@@ -85,12 +85,6 @@
       overflow: hidden;
     }
 
-    #logo {
-      display: block;
-      max-width: 100px;
-      margin: 0 auto 1rem;
-    }
-
     .dark-toggle, .lang-toggle {
       position: absolute;
       top: 1rem;
@@ -122,15 +116,24 @@
       font-size: 0.95rem;
       color: #555;
       margin-top: -0.5rem;
+      text-align: center;
     }
 
     .dark-mode .dual-line {
       color: #aaa;
     }
 
-    .lang-ar { display: none; }
-    .arabic-active .lang-en { display: none; }
-    .arabic-active .lang-ar { display: block; }
+    .lang-ar {
+      display: none;
+    }
+
+    .arabic-active .lang-en {
+      display: none;
+    }
+
+    .arabic-active .lang-ar {
+      display: block;
+    }
 
     @keyframes fadein {
       from { opacity: 0; transform: translateY(10px); }
@@ -142,8 +145,6 @@
   <div class="card">
     <button class="lang-toggle" onclick="toggleLang()">🌐 العربية</button>
     <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Dark Mode</button>
-
-    <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Coptic_cross.svg/128px-Coptic_cross.svg.png" alt="Coptic Cross">
 
     <h1 class="lang-en">📋 Weekly Events at St. Mary Coptic Orthodox Church</h1>
     <h1 class="lang-ar">📋 الفعاليات الأسبوعية في كنيسة القديسة مريم القبطية الأرثوذكسية</h1>
